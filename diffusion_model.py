@@ -21,25 +21,28 @@ def calculate_stable_time_step(grid_spacing, diffusivity):
     return dt
 
 
-D = 100  # diffusivity
-Lx = 300  # model domain
+if __name__ == "main":
+    D = 100  # diffusivity
+    Lx = 300  # model domain
 
-dx = 0.5  # grid spacing
-x = np.arange(start=0, stop=Lx, step=dx)
-nx = len(x)
+    dx = 0.5  # grid spacing
+    x = np.arange(start=0, stop=Lx, step=dx)
+    nx = len(x)
 
-dt = calculate_stable_time_step(dx, D)
-nt = 5000
+    dt = calculate_stable_time_step(dx, D)
+    nt = 5000
 
-z = np.zeros_like(x)
-z_left = 500
-z_right = 0
-z[: nx // 2] = z_left
-z[nx // 2 :] = z_right
+    z = np.zeros_like(x)
+    z_left = 500
+    z_right = 0
+    z[: nx // 2] = z_left
+    z[nx // 2 :] = z_right
 
-plot_profile(x, z, "r", "Initial hillslope profile", "Initial_hillslope_profile.png")
+    plot_profile(
+        x, z, "r", "Initial hillslope profile", "Initial_hillslope_profile.png"
+    )
 
-for t in range(0, nt):
-    z[1:-1] += D * dt / dx**2 * (z[:-2] - 2 * z[1:-1] + z[2:])
+    for t in range(0, nt):
+        z[1:-1] += D * dt / dx**2 * (z[:-2] - 2 * z[1:-1] + z[2:])
 
-plot_profile(x, z, "b", "Final hillslope profile", "Final_hillslope_profile.png")
+    plot_profile(x, z, "b", "Final hillslope profile", "Final_hillslope_profile.png")
