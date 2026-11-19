@@ -1,6 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def plot_profile(grid, elevation, color="r", title=None, output=None):
+    plt.figure()
+    plt.plot(grid, elevation, color)
+    plt.xlabel("x")
+    plt.ylabel("z")
+    
+    if title != None:
+        plt.title(title)
+
+    if output != None:
+        plt.savefig(output)
+
 D = 100  # diffusivity
 Lx = 300 # model domain
 
@@ -14,12 +26,7 @@ z_right = 0
 z[ :nx//2] = z_left
 z[nx//2: ] = z_right
 
-plt.figure()
-plt.plot(x, z, "b")
-plt.xlabel("x")
-plt.ylabel("z")
-plt.title("Initial hillslope profile")
-plt.show()
+plot_profile(x, z, "r", "Initial hillslope profile", "Initial_hillslope_profile.png")
 
 nt = 5000
 dt = 0.5 * dx **2 / D
@@ -27,8 +34,4 @@ dt = 0.5 * dx **2 / D
 for t in range(0, nt):
 	z[1:-1] += D * dt / dx ** 2 * (z[:-2] - 2*z[1:-1] + z[2:])
 
-plt.figure()
-plt.plot(x, z, "b")
-plt.xlabel("x")
-plt.ylabel("z")
-plt.title("Final hillslope profile")
+plot_profile(x, z, "b", "Final hillslope profile", "Final_hillslope_profile.png")
